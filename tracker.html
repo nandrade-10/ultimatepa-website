@@ -359,11 +359,12 @@
 
 <script>
 var STEPS = [
-  { key: 'Initiated',                      label: 'Initiated' },
-  { key: 'Submitted/Waiting on Insurance', label: 'Submitted / Waiting on insurance' },
-  { key: 'Approved',                       label: 'Approved' },
-  { key: 'Denied',                         label: 'Denied' },
-  { key: 'Appeal in Progress',             label: 'Appeal in progress' }
+  { key: 'Initiated',            label: 'Initiated' },
+  { key: 'Waiting on Documents', label: 'Waiting on Documents' },
+  { key: 'Submitted',            label: 'Submitted to Payer' },
+  { key: 'Approved',             label: 'Approved' },
+  { key: 'Denied',               label: 'Denied' },
+  { key: 'Appeal in Progress',   label: 'Appeal in Progress' }
 ];
 
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywpnJYJmUage7WTArZRxambTMKl7-EkUez7Tcyo3nT1ZJBndQoN25GyfPvoe7DRffE/exec';
@@ -378,10 +379,8 @@ function lookup() {
   errBox.className = 'error-box';
   card.className   = 'result-card';
 
-  if (!code.match(/^UPA-\d{4}-[A-Z0-9]{6,12}$/i)) {
-    errBox.textContent = 'Please enter a valid PA code in the format UPA-YYYY-XXXXXXXX.';
-    errBox.className = 'error-box visible';
-    return;
+  if (status === 'Approved' && (step.key === 'Denied' || step.key === 'Appeal in Progress')) return;
+    if ((isDenied || isAppeal) && step.key === 'Approved') return;
   }
 
   btn.disabled = true;
