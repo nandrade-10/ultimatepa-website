@@ -511,7 +511,7 @@ footer img { height: 40px; opacity: 0.9; }
           <div class="contact-icon">✉</div>
           <div>
             <div class="contact-item-label">Email</div>
-            <div class="contact-item-value"><a href="mailto:support@ultimatepa.com">support@ultimatepa.com</a></div>
+            <div class="contact-item-value"><a href="mailto:nandrade@ultimatepa.com">nandrade@ultimatepa.com</a></div>
           </div>
         </div>
         <div class="contact-item">
@@ -532,28 +532,64 @@ footer img { height: 40px; opacity: 0.9; }
       <div class="contact-form-box">
         <h3>Send us a message</h3>
         <p>Tell us about your practice and we'll be in touch within one business day.</p>
-        <div class="form-group">
-          <label>Practice name</label>
-          <input type="text" placeholder="e.g. Ultimate Neurology Clinic">
-        </div>
-        <div class="form-group">
-          <label>Your name</label>
-          <input type="text" placeholder="First and last name">
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="your@practice.com">
-        </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="tel" placeholder="(000) 000-0000">
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="Tell us about your practice and what you're looking for..."></textarea>
-        </div>
-        <button class="form-submit">Send message</button>
-        <p class="form-note">We typically respond within one business day.</p>
+        <form id="contact-form">
+          <input type="hidden" name="_subject" value="New inquiry from ultimatepa.com">
+          <div class="form-group">
+            <label>Practice name</label>
+            <input type="text" name="practice_name" placeholder="e.g. Ultimate Neurology Clinic" required>
+          </div>
+          <div class="form-group">
+            <label>Your name</label>
+            <input type="text" name="name" placeholder="First and last name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="your@practice.com" required>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="(000) 000-0000">
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea name="message" placeholder="Tell us about your practice and what you're looking for..."></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submit-btn">Send message</button>
+          <p class="form-note" id="form-note">We typically respond within one business day.</p>
+          <div id="form-success" style="display:none;background:#EAF3DE;border:1px solid #86C05C;border-radius:8px;padding:14px;text-align:center;color:#27500A;font-size:14px;margin-top:12px;">
+            ✓ Message sent! We'll be in touch within one business day.
+          </div>
+          <div id="form-error" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:14px;text-align:center;color:#B91C1C;font-size:14px;margin-top:12px;">
+            Something went wrong. Please email us at <a href="mailto:nandrade@ultimatepa.com">nandrade@ultimatepa.com</a>
+          </div>
+        </form>
+        <script>
+          document.getElementById('contact-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Sending...';
+            try {
+              var res = await fetch('https://formspree.io/f/mpqblqog', {
+                method: 'POST',
+                body: new FormData(this),
+                headers: { 'Accept': 'application/json' }
+              });
+              if (res.ok) {
+                document.getElementById('form-success').style.display = 'block';
+                document.getElementById('form-note').style.display = 'none';
+                btn.style.display = 'none';
+                this.reset();
+              } else {
+                document.getElementById('form-error').style.display = 'block';
+                btn.disabled = false; btn.textContent = 'Send message';
+              }
+            } catch(err) {
+              document.getElementById('form-error').style.display = 'block';
+              btn.disabled = false; btn.textContent = 'Send message';
+            }
+          });
+        </script>
       </div>
     </div>
   </div>
@@ -565,7 +601,7 @@ footer img { height: 40px; opacity: 0.9; }
   <div class="footer-text">
     &copy; 2026 Ultimate PA &mdash; A DBA of A&amp;E Biomedical LLC<br>
     <a href="tracker.html">Track a PA</a> &nbsp;&middot;&nbsp;
-    <a href="mailto:support@ultimatepa.com">support@ultimatepa.com</a>
+    <a href="mailto:nandrade@ultimatepa.com">nandrade@ultimatepa.com</a>
   </div>
 </footer>
 
